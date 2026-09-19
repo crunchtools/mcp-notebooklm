@@ -1,12 +1,10 @@
----
-version: 1.0.0
-ratified: 2026-06-24
-status: Active
-inherits: crunchtools/constitution v1.0.0
-profile: Container Image
----
-
 # mcp-notebooklm Constitution
+
+> **Version:** 1.0.0
+> **Ratified:** 2026-06-24
+> **Status:** Active
+> **Inherits:** [crunchtools/constitution](https://github.com/crunchtools/constitution) v1.0.0
+> **Profile:** Container Image
 
 ## License
 AGPL-3.0-or-later
@@ -39,8 +37,9 @@ Multi-stage build:
 - Credentials mounted via volume at `/home/default/.notebooklm-mcp-cli`
 
 ## Testing
-- Container builds successfully
-- `notebooklm-mcp --help` exits 0
+- Build test: the image builds from the `Containerfile` in CI on every push and
+  pull request, before anything is pushed to Quay or GHCR
+- Smoke test: `notebooklm-mcp --help` exits 0 in the built image
 
 ## Quality Gates
 - GHA container build passes on PR
