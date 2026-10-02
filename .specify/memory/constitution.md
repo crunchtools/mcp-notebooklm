@@ -1,46 +1,54 @@
 # mcp-notebooklm Constitution
 
-> **Version:** 1.0.1
+> **Version:** 1.1.0
 > **Ratified:** 2026-06-24
+> **Amended:** 2026-10-02
 > **Status:** Active
-> **Inherits:** [crunchtools/constitution](https://github.com/crunchtools/constitution) v1.17.0
+> **Inherits:** [crunchtools/constitution](https://github.com/crunchtools/constitution) v1.18.0
 > **Profile:** Container Image
 
-## License
-AGPL-3.0-or-later
+This file holds what is specific to mcp-notebooklm. The fleet rules and the
+Container Image profile apply at the inherited version and are checked against
+this repo's files by `constitution.yml`. They are not restated here.
 
-## Versioning
-Semantic Versioning 2.0.0. Container image version tracks the upstream
-`notebooklm-mcp-cli` PyPI package version where possible.
+## Upstream Package
 
-## Base Image
-Multi-stage build:
-- Build stage: `quay.io/hummingbird/python:latest-builder`
-- Runtime stage: `quay.io/hummingbird/python:latest`
+Container wrapper for the upstream
+[`notebooklm-mcp-cli`](https://pypi.org/project/notebooklm-mcp-cli/) PyPI
+package, providing MCP access to Google NotebookLM. The package is installed
+at a pinned version (`notebooklm-mcp-cli==0.7.7`); this repo carries no
+patches to it.
 
-## Registry
-- Primary: `quay.io/crunchtools/mcp-notebooklm`
-- Mirror: `ghcr.io/crunchtools/mcp-notebooklm`
+## Build Stages
 
-## Containerfile Conventions
-- Multi-stage build to minimize runtime image size
-- Required LABELs: name, version, summary, description, maintainer, url, OCI labels
-- `--no-cache-dir` on pip install
-- Non-root runtime (Hummingbird default UID 65532)
+| Stage | Image | Role |
+|-------|-------|------|
+| Build | `quay.io/hummingbird/python:latest-builder` | `pip install --no-cache-dir --prefix=/install` of the pinned package |
+| Runtime | `quay.io/hummingbird/python:latest` | copies `/install` into `/usr`; runs as the Hummingbird default non-root UID 65532 |
 
-## Packages Installed
-- `notebooklm-mcp-cli` (from PyPI, pinned version)
+## Instance
 
-## Runtime
-- ENTRYPOINT: `notebooklm-mcp`
-- Default transport: HTTP on port 8000
-- Credentials mounted via volume at `/home/default/.notebooklm-mcp-cli`
+| Context | Name |
+|---------|------|
+| GitHub repo | `crunchtools/mcp-notebooklm` |
+| Container image | `quay.io/crunchtools/mcp-notebooklm` |
+| MCP registry name | `io.github.crunchtools/mcp-notebooklm` |
+| Container port | 8000 (published on host port 8025 in the documented run) |
 
-## Testing
-- Build test: the image builds from the `Containerfile` in CI on every push and
-  pull request, before anything is pushed to Quay or GHCR
-- Smoke test: `notebooklm-mcp --help` exits 0 in the built image
+## Runtime and Credentials
 
-## Quality Gates
-- GHA container build passes on PR
-- Trivy scan (informational)
+- **Entrypoint:** `notebooklm-mcp`; default is HTTP transport on
+  `0.0.0.0:8000`. `--transport stdio` serves local Claude Code.
+- **Credentials:** NotebookLM needs browser-based Google authentication.
+  `nlm login` is run locally and the resulting directory is mounted at
+  `/home/default/.notebooklm-mcp-cli`. Nothing credential-bearing is baked
+  into the image.
+- **Smoke test:** `notebooklm-mcp --help` exits 0 in the built image.
+
+## History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.0.0 | 2026-09-19 | Constitution header converted; ratification date kept from the initial wrapper (2026-06-24) |
+| 1.0.1 | 2026-09-25 | Gatehouse review, triage and pre-commit gates |
+| 1.1.0 | 2026-10-02 | Manifest under constitution v1.18.0: fleet and profile restatement removed, wrapper specifics kept |
