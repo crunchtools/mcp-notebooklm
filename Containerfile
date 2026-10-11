@@ -18,7 +18,7 @@ RUN python3 -m pip install --no-cache-dir --prefix=/install notebooklm-mcp-cli==
 FROM quay.io/hummingbird/python:latest
 
 LABEL name="mcp-notebooklm" \
-      version="0.1.0" \
+      version="0.2.0" \
       summary="NotebookLM MCP server for Google NotebookLM integration" \
       description="Container wrapper for notebooklm-mcp-cli, providing MCP access to Google NotebookLM" \
       maintainer="crunchtools.com" \
