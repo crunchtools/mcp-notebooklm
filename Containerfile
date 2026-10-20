@@ -9,13 +9,13 @@
 #     -v ~/.notebooklm-mcp-cli:/home/default/.notebooklm-mcp-cli:Z \
 #     quay.io/crunchtools/mcp-notebooklm
 
-FROM quay.io/hummingbird/python:latest-builder AS build
+FROM quay.io/hummingbird/python:3.14-builder AS build
 
 USER root
 RUN dnf install -y python3-pip && dnf clean all
 RUN python3 -m pip install --no-cache-dir --prefix=/install notebooklm-mcp-cli==0.7.7
 
-FROM quay.io/hummingbird/python:latest
+FROM quay.io/hummingbird/python:3.14
 
 LABEL name="mcp-notebooklm" \
       version="0.2.0" \
