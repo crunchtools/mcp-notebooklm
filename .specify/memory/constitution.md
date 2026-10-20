@@ -23,8 +23,8 @@ patches to it.
 
 | Stage | Image | Role |
 |-------|-------|------|
-| Build | `quay.io/hummingbird/python:latest-builder` | `pip install --no-cache-dir --prefix=/install` of the pinned package |
-| Runtime | `quay.io/hummingbird/python:latest` | copies `/install` into `/usr`; runs as the Hummingbird default non-root UID 65532 |
+| Build | `quay.io/hummingbird/python:3.14-builder` | `pip install --no-cache-dir --prefix=/install` of the pinned package |
+| Runtime | `quay.io/hummingbird/python:3.14` | copies `/install` into `/usr`; runs as the Hummingbird default non-root UID 65532 |
 
 ## Instance
 
