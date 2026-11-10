@@ -6,6 +6,13 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+
+## [0.3.1] - 2026-11-10
+
+### Fixed
+
+- **Lock the wrapped CLI's transitive dependencies (RT#1564).** The image ran `pip install notebooklm-mcp-cli==0.7.7`, letting pip resolve all 74 transitive dependencies fresh at build time. Pin them in a hash-generated `requirements.txt` (`uv pip compile requirements.in`) and install with `--no-deps` so the image ships the exact set, not whatever PyPI held that day. Stays a container-only repo (no pyproject/uv.lock), so no profile change.
+
 ## [0.3.0] - 2026-10-20
 
 ### Changed

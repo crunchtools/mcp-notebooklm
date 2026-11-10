@@ -13,12 +13,16 @@ FROM quay.io/hummingbird/python:3.14-builder AS build
 
 USER root
 RUN dnf install -y python3-pip && dnf clean all
-RUN python3 -m pip install --no-cache-dir --prefix=/install notebooklm-mcp-cli==0.7.7
+# Install from a hash-pinned requirements.txt (uv pip compile of requirements.in),
+# not a fresh resolve of the published package's floors (RT#1564). --no-deps so
+# pip installs exactly the locked, hashed set.
+COPY requirements.txt /tmp/requirements.txt
+RUN python3 -m pip install --no-cache-dir --no-deps --prefix=/install -r /tmp/requirements.txt
 
 FROM quay.io/hummingbird/python:3.14
 
 LABEL name="mcp-notebooklm" \
-      version="0.3.0" \
+      version="0.3.1" \
       summary="NotebookLM MCP server for Google NotebookLM integration" \
       description="Container wrapper for notebooklm-mcp-cli, providing MCP access to Google NotebookLM" \
       maintainer="crunchtools.com" \
