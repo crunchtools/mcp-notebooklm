@@ -22,7 +22,7 @@ RUN python3 -m pip install --no-cache-dir --no-deps --prefix=/install -r /tmp/re
 FROM quay.io/hummingbird/python:3.14
 
 LABEL name="mcp-notebooklm" \
-      version="0.3.1" \
+      version="0.4.0" \
       summary="NotebookLM MCP server for Google NotebookLM integration" \
       description="Container wrapper for notebooklm-mcp-cli, providing MCP access to Google NotebookLM" \
       maintainer="crunchtools.com" \
